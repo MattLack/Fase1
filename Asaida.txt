@@ -4091,7 +4091,6 @@ Agrestia
 Agrião
 Agriçar
 Agrico-industrial
-(De _agricola_  _industrial_)
 Agrícola
 Agricolar
 Agricultado
@@ -4614,7 +4613,6 @@ Alanita
 Alanite
 Alano
 Alanos
-(não Álanos)
 Alanta
 Alanterna
 Alanterneiro
@@ -5792,7 +5790,7 @@ Aljubádigo
 Aljube
 Aljubeiro
 Aljubeta (_bê_)
-O mesmo que _algibebe_. Us. por Camillo.
+
 Aljubeteiro
 Aljuz
 Allagite
