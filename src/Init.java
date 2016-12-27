@@ -71,13 +71,10 @@ public class Init {
 		replaceAll(Alt1, "_", "");
 		replaceAll(Alt1, ")", "");
 		replaceAll(Alt1, "(", "");
-		replaceAll(Alt1, "...", "");
-		replaceAll(Alt1, "..", "");
 		replaceAll(Alt1, "*", "");
 		replaceAll(Alt1, "&", "");
 		replaceAll(Alt1, "¨", "");
 		replaceAll(Alt1, "¬", "");
-		replaceAll(Alt1, "¬¬", "");
 		replaceAll(Alt1, "%", "");
 		replaceAll(Alt1, "¢", "");
 		replaceAll(Alt1, "$", "");
@@ -193,7 +190,7 @@ public class Init {
 				palavraC = new String(Alt1);
 				count = Alt1.length();
 				Alt1.delete(0, count);
-
+				//System.out.println(palavraC);
 				this.palavras.add(palavraC);
 
 			}
@@ -214,7 +211,7 @@ public class Init {
 	public static void main(String args[]) {
 
 		// lerArquivo("amor");
-		// pos("Apartamento cása porta-luvas 123vida");
+		//pos("Apartamento cása porta-luvas 11111vida");
 
 	}
 
