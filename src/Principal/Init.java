@@ -1,7 +1,6 @@
+package Principal;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -124,7 +123,7 @@ public class Init {
 
 		try {
 
-			leitor = new BufferedReader(new FileReader(letra1 + "saida.txt"));
+			leitor = new BufferedReader(new FileReader("src/Dicionario/"+letra1 + "saida.txt"));
 
 			String linha = "";
 
@@ -212,6 +211,7 @@ public class Init {
 
 		// lerArquivo("amor");
 		//pos("Apartamento cása porta-luvas 11111vida");
+		//BuscaDicionario("amor");
 
 	}
 
