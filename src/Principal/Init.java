@@ -103,24 +103,6 @@ public class Init {
 
 	}
 
-	private static String vogalTratamento(String letra1) {
-
-		if ((letra1.equals("Á")) || (letra1.equals("À")) || (letra1.equals("Â"))) {
-			return "A";
-		} else if ((letra1.equals("É")) || (letra1.equals("È")) || (letra1.equals("Ê"))) {
-			return "E";
-		} else if ((letra1.equals("Í")) || (letra1.equals("Ì"))) {
-			return "I";
-		} else if ((letra1.equals("Ó")) || (letra1.equals("Ô"))) {
-			return "O";
-		} else if (letra1.equals("Ú")) {
-			return "U";
-		}
-
-		return letra1;
-
-	}
-
 	public static void BuscaDicionario(String palavra) {
 		String proxLetra = null;
 		String proxLetraLida = null;
@@ -129,8 +111,6 @@ public class Init {
 
 		String letra1 = palavra.substring(0, 1);
 		String letra2 = palavra.substring(1, 2);
-
-		letra1 = vogalTratamento(letra1);
 
 		for (int i = 0; i < 26; i++) {
 			if (letra2.equals(Alfabeto[i])) {
@@ -152,7 +132,7 @@ public class Init {
 				|| letra1.equals("N") || letra1.equals("O") || letra1.equals("P") || letra1.equals("Q")
 				|| letra1.equals("R") || letra1.equals("S") || letra1.equals("T") || letra1.equals("U")
 				|| letra1.equals("V") || letra1.equals("W") || letra1.equals("X") || letra1.equals("Y")
-				|| letra1.equals("Z")) {
+				|| letra1.equals("Z")){
 			try {
 
 				leitor = new BufferedReader(new FileReader("src/Dicionario/" + letra1 + "saida.txt"));
@@ -166,14 +146,14 @@ public class Init {
 								proxLetraLida = linha.substring(1, 2);
 						// System.out.println(linha);
 						if (linha.contains(aux)) {
-							System.out.println("(" + palavra + ") está contida no dicionário");
+							System.out.println("("+ palavra + ") está contida no dicionário");
 							key = 1;
 						}
 					}
 
 				}
 				if (key == 0) {
-					System.out.println("(" + palavra + ") não está contida no dicionário");
+					System.out.println("("+ palavra + ") não está contida no dicionário");
 				}
 			} catch (Exception e) {
 				System.out.println("Arquivo inexistente");
@@ -185,8 +165,8 @@ public class Init {
 					e.printStackTrace();
 				}
 			}
-		} else {
-			System.out.println("### A palavra " + palavra + " contém erro ####");
+		}else{
+			System.out.println("### A palavra "+palavra+" contém erro ####");
 		}
 	}
 
@@ -234,9 +214,9 @@ public class Init {
 	public void Execução(String frase) {
 
 		this.pos(frase);
-
+		
 		System.out.println("\nBusca no dicionário de palavras:\n");
-
+		
 		for (int i = 0; i < this.palavras.size(); i++) {
 			Init.BuscaDicionario(palavras.get(i));
 		}
