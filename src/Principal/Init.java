@@ -1,4 +1,5 @@
 package Principal;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -21,6 +22,10 @@ public class Init {
 			instance = new Init();
 		}
 		return instance;
+	}
+
+	public String toStringPOS() {
+		return this.palavras.toString();
 	}
 
 	private static void replaceAll(StringBuffer builder, String from, String to) {
@@ -112,7 +117,7 @@ public class Init {
 				proxLetra = Alfabeto[i + 1];
 			}
 		}
-		if (proxLetra.equals("*")) {
+		if ((proxLetra != null) && (proxLetra.equals("*"))) {
 			proxLetra = Alfabeto[26];
 		}
 
@@ -121,39 +126,48 @@ public class Init {
 		aux.append(palavra);
 		int key = 0;
 
-		try {
-
-			leitor = new BufferedReader(new FileReader("src/Dicionario/"+letra1 + "saida.txt"));
-
-			String linha = "";
-
-			while (((linha = leitor.readLine()) != null) && !(proxLetra.equals(proxLetraLida)) && (key == 0)) {
-				if (linha.length() > 0) {
-					if (!(linha.substring(0, 1).equals("(")))
-						if (!(linha.substring(1, 2).equals("(")))
-							proxLetraLida = linha.substring(1, 2);
-					// System.out.println(linha);
-					if (linha.contains(aux)) {
-						System.out.println(palavra + " está contida no dicionário");
-						key = 1;
-					}
-				}
-
-			}
-			if (key == 0) {
-				System.out.println(palavra + " não está contida no dicionário");
-			}
-		} catch (Exception e) {
-			System.out.println("arquivo inexistente");
-			e.printStackTrace();
-		} finally {
+		if (letra1.equals("A") || letra1.equals("B") || letra1.equals("C") || letra1.equals("D") || letra1.equals("E")
+				|| letra1.equals("F") || letra1.equals("G") || letra1.equals("H") || letra1.equals("I")
+				|| letra1.equals("J") || letra1.equals("K") || letra1.equals("L") || letra1.equals("M")
+				|| letra1.equals("N") || letra1.equals("O") || letra1.equals("P") || letra1.equals("Q")
+				|| letra1.equals("R") || letra1.equals("S") || letra1.equals("T") || letra1.equals("U")
+				|| letra1.equals("V") || letra1.equals("W") || letra1.equals("X") || letra1.equals("Y")
+				|| letra1.equals("Z")){
 			try {
-				leitor.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
 
+				leitor = new BufferedReader(new FileReader("src/Dicionario/" + letra1 + "saida.txt"));
+
+				String linha = "";
+
+				while (((linha = leitor.readLine()) != null) && !(proxLetra.equals(proxLetraLida)) && (key == 0)) {
+					if (linha.length() > 0) {
+						if (!(linha.substring(0, 1).equals("(")))
+							if (!(linha.substring(1, 2).equals("(")))
+								proxLetraLida = linha.substring(1, 2);
+						// System.out.println(linha);
+						if (linha.contains(aux)) {
+							System.out.println("("+ palavra + ") está contida no dicionário");
+							key = 1;
+						}
+					}
+
+				}
+				if (key == 0) {
+					System.out.println("("+ palavra + ") não está contida no dicionário");
+				}
+			} catch (Exception e) {
+				System.out.println("Arquivo inexistente");
+				// e.printStackTrace();
+			} finally {
+				try {
+					leitor.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}else{
+			System.out.println("### A palavra "+palavra+" contém erro ####");
+		}
 	}
 
 	public void pos(String texto) {
@@ -189,7 +203,7 @@ public class Init {
 				palavraC = new String(Alt1);
 				count = Alt1.length();
 				Alt1.delete(0, count);
-				//System.out.println(palavraC);
+				// System.out.println(palavraC);
 				this.palavras.add(palavraC);
 
 			}
@@ -200,18 +214,12 @@ public class Init {
 	public void Execução(String frase) {
 
 		this.pos(frase);
-
+		
+		System.out.println("\nBusca no dicionário de palavras:\n");
+		
 		for (int i = 0; i < this.palavras.size(); i++) {
 			Init.BuscaDicionario(palavras.get(i));
 		}
-
-	}
-
-	public static void main(String args[]) {
-
-		// lerArquivo("amor");
-		//pos("Apartamento cása porta-luvas 11111vida");
-		//BuscaDicionario("amor");
 
 	}
 
