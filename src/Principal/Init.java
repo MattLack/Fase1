@@ -5,7 +5,21 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+import Xml.XmlSearch;
 
 public class Init {
 
@@ -121,6 +135,134 @@ public class Init {
 
 	}
 
+	public static void BuscaDicionarioXML(String palavra) {
+		String proxLetra = null;
+		String proxLetraLida = null;
+		boolean chave = false;
+
+		palavra = palavra.substring(0, 1).toUpperCase() + palavra.substring(1).toLowerCase();
+
+		String letra1 = palavra.substring(0, 1);
+		String letra2 = null;
+		if (palavra.length() > 1)
+			letra2 = palavra.substring(1, 2);
+		else
+			letra2 = "";
+
+		letra1 = vogalTratamento(letra1);
+
+		for (int i = 0; i < 26; i++) {
+			if (letra2.equals(Alfabeto[i])) {
+				proxLetra = Alfabeto[i + 1];
+			}
+		}
+		if ((proxLetra != null) && (proxLetra.equals("*"))) {
+			proxLetra = Alfabeto[26];
+		}
+
+		StringBuffer aux = new StringBuffer();
+		aux.append(palavra);
+
+		if (letra1.equals("A") || letra1.equals("B") || letra1.equals("C") || letra1.equals("D") || letra1.equals("E")
+				|| letra1.equals("F") || letra1.equals("G") || letra1.equals("H") || letra1.equals("I")
+				|| letra1.equals("J") || letra1.equals("K") || letra1.equals("L") || letra1.equals("M")
+				|| letra1.equals("N") || letra1.equals("O") || letra1.equals("P") || letra1.equals("Q")
+				|| letra1.equals("R") || letra1.equals("S") || letra1.equals("T") || letra1.equals("U")
+				|| letra1.equals("V") || letra1.equals("W") || letra1.equals("X") || letra1.equals("Y")
+				|| letra1.equals("Z")) {
+			try {
+				// doc tratamento e abertura arquivo xml
+				DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+				DocumentBuilder builder = factory.newDocumentBuilder();
+				Document doc = builder.parse("src/Dicxml/" + letra1 + ".xml");
+
+				// busca tag dentro do xml
+				NodeList listaDePalavras = doc.getElementsByTagName("entry");
+
+				int tamanhoLista = listaDePalavras.getLength();
+
+				for (int i = 0; i < tamanhoLista; i++) {
+
+					Node noPalavra = listaDePalavras.item(i);
+
+					if (noPalavra.getNodeType() == Node.ELEMENT_NODE) {
+
+						Element elementoPalavra = (Element) noPalavra;
+
+						String id = elementoPalavra.getAttribute("id");
+
+						if (id.length() > 1)
+							proxLetraLida = id.substring(1, 2);
+
+						if (id.contains("(")) {
+							
+							String TextAux[] = id.split(Pattern.quote(" "));
+
+							byte per = 0;
+
+							for (per = 0; per < TextAux.length; per++) {
+								if (TextAux[per].equals(palavra)) {
+									chave = true;
+								}
+							}
+						}
+
+						if ((id.equals(palavra) || (chave==true)) && !(proxLetra.equals(proxLetraLida))) {
+
+							NodeList listaDeFilhosDaPalavra = elementoPalavra.getChildNodes();
+
+							int tamanhoListaFilhos = listaDeFilhosDaPalavra.getLength();
+
+							System.out.println("Palavra: " + palavra + "\r\n");
+
+							for (int j = 0; j < tamanhoListaFilhos; j++) {
+
+								Node noFilho = listaDeFilhosDaPalavra.item(j);
+
+								if (noFilho.getNodeType() == Node.ELEMENT_NODE) {
+
+									Element elementoFilho = (Element) noFilho;
+
+									switch (elementoFilho.getTagName()) {
+
+									case "gramGrp":
+										// imprimo o nome
+										System.out.println("Classificação Gramática:\r\n "
+												+ elementoFilho.getTextContent() + "\r\n");
+										break;
+
+									case "def":
+										// imprimo a idade
+										System.out.println("Definição: \r\n" + elementoFilho.getTextContent() + "\r\n");
+										break;
+
+									}
+
+								}
+							}
+						}
+
+						else {
+							// System.out.println(palavra + " não está contida
+							// no dicionário");
+						}
+						
+						chave = false;
+
+					}
+				}
+
+			} catch (ParserConfigurationException ex) {
+				Logger.getLogger(XmlSearch.class.getName()).log(Level.SEVERE, null, ex);
+			} catch (SAXException ex) {
+				Logger.getLogger(XmlSearch.class.getName()).log(Level.SEVERE, null, ex);
+			} catch (IOException ex) {
+				Logger.getLogger(XmlSearch.class.getName()).log(Level.SEVERE, null, ex);
+			}
+		}
+
+	}
+
 	public static void BuscaDicionario(String palavra) {
 		String proxLetra = null;
 		String proxLetraLida = null;
@@ -155,7 +297,7 @@ public class Init {
 				|| letra1.equals("Z")) {
 			try {
 
-				leitor = new BufferedReader(new FileReader("src/Dicionario/" + letra1 + "saida.txt"));
+				leitor = new BufferedReader(new FileReader("src/Dictxt/" + letra1 + "saida.txt"));
 
 				String linha = "";
 
@@ -231,7 +373,7 @@ public class Init {
 
 	}
 
-	public void Execução(String frase) {
+	public void Execucao(String frase) {
 
 		this.pos(frase);
 
@@ -239,6 +381,21 @@ public class Init {
 
 		for (int i = 0; i < this.palavras.size(); i++) {
 			Init.BuscaDicionario(palavras.get(i));
+		}
+
+	}
+
+	public void ExecucaoXML(String frase) {
+		
+		System.out.println("Frase:");
+		System.out.println(frase);
+
+		this.pos(frase);
+
+		System.out.println("\nBusca no dicionário de palavras:\n");
+
+		for (int i = 0; i < this.palavras.size(); i++) {
+			Init.BuscaDicionarioXML(palavras.get(i));
 		}
 
 	}
