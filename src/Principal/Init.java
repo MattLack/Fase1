@@ -19,7 +19,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import Xml.XmlSearch;
 
 public class Init {
 
@@ -253,11 +252,11 @@ public class Init {
 				}
 
 			} catch (ParserConfigurationException ex) {
-				Logger.getLogger(XmlSearch.class.getName()).log(Level.SEVERE, null, ex);
+				Logger.getLogger(Init.class.getName()).log(Level.SEVERE, null, ex);
 			} catch (SAXException ex) {
-				Logger.getLogger(XmlSearch.class.getName()).log(Level.SEVERE, null, ex);
+				Logger.getLogger(Init.class.getName()).log(Level.SEVERE, null, ex);
 			} catch (IOException ex) {
-				Logger.getLogger(XmlSearch.class.getName()).log(Level.SEVERE, null, ex);
+				Logger.getLogger(Init.class.getName()).log(Level.SEVERE, null, ex);
 			}
 		}
 
