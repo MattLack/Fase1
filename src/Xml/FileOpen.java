@@ -2,8 +2,11 @@ package Xml;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class FileOpen {
 
@@ -20,20 +23,20 @@ public class FileOpen {
 		return instance;
 	}
 
-	public String lerArquivo() {
+	public ArrayList<String> lerArquivo() {
 
-		String texto = null;
+		ArrayList<String> instrucoes = new ArrayList<String>();
 		BufferedReader leitor = null;
 
 		try {
 
-			leitor = new BufferedReader(new FileReader("src/input.txt"));
+			leitor = new BufferedReader(new FileReader("input.txt"));
 
-			texto = "";
+			String linha = "";
 
-			while ((texto = leitor.readLine()) != null) {
-				if (texto.length() > 0)
-					texto.concat(texto);
+			while ((linha = leitor.readLine()) != null) {
+				if (linha.length() > 0)
+					instrucoes.add(linha);
 			}
 		} catch (Exception e) {
 
@@ -45,8 +48,27 @@ public class FileOpen {
 				e.printStackTrace();
 			}
 		}
-		System.out.println(texto);
-		return texto;
+		return instrucoes;
+
+	}
+	
+	public void arquivoSaida(String texto) {
+
+		try {
+			if (new File("output.txt").exists() == false) {
+
+				new File("output.txt").createNewFile();
+
+			}
+			escritor = new BufferedWriter(new FileWriter("output.txt"));
+
+			escritor.append("\r\n" + texto + "\r\n");
+			escritor.flush();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 }

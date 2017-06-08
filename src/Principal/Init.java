@@ -19,7 +19,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-
 public class Init {
 
 	private static Init instance = null;
@@ -138,6 +137,7 @@ public class Init {
 		String proxLetra = null;
 		String proxLetraLida = null;
 		boolean chave = false;
+		boolean control = false;
 
 		palavra = palavra.substring(0, 1).toUpperCase() + palavra.substring(1).toLowerCase();
 
@@ -194,7 +194,7 @@ public class Init {
 							proxLetraLida = id.substring(1, 2);
 
 						if (id.contains("(")) {
-							
+
 							String TextAux[] = id.split(Pattern.quote(" "));
 
 							byte per = 0;
@@ -206,13 +206,15 @@ public class Init {
 							}
 						}
 
-						if ((id.equals(palavra) || (chave==true)) && !(proxLetra.equals(proxLetraLida))) {
+						if ((id.equals(palavra) || (chave == true)) && !(proxLetra.equals(proxLetraLida))) {
 
 							NodeList listaDeFilhosDaPalavra = elementoPalavra.getChildNodes();
 
 							int tamanhoListaFilhos = listaDeFilhosDaPalavra.getLength();
 
 							System.out.println("Palavra: " + palavra + "\r\n");
+
+							control = true;
 
 							for (int j = 0; j < tamanhoListaFilhos; j++) {
 
@@ -225,13 +227,11 @@ public class Init {
 									switch (elementoFilho.getTagName()) {
 
 									case "gramGrp":
-										// imprimo o nome
 										System.out.println("Classificação Gramática:\r\n "
 												+ elementoFilho.getTextContent() + "\r\n");
 										break;
 
 									case "def":
-										// imprimo a idade
 										System.out.println("Definição: \r\n" + elementoFilho.getTextContent() + "\r\n");
 										break;
 
@@ -241,14 +241,14 @@ public class Init {
 							}
 						}
 
-						else {
-							// System.out.println(palavra + " não está contida
-							// no dicionário");
-						}
-						
 						chave = false;
 
 					}
+				}
+
+				if (control == false) {
+					System.out.println("\r\n"+palavra + " não está contida no dicionário\r\n");
+
 				}
 
 			} catch (ParserConfigurationException ex) {
@@ -385,7 +385,7 @@ public class Init {
 	}
 
 	public void ExecucaoXML(String frase) {
-		
+
 		System.out.println("Frase:");
 		System.out.println(frase);
 
