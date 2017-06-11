@@ -138,6 +138,7 @@ public class Init {
 		String proxLetraLida = null;
 		boolean chave = false;
 		boolean control = false;
+		byte key=0;
 
 		palavra = palavra.substring(0, 1).toUpperCase() + palavra.substring(1).toLowerCase();
 
@@ -207,6 +208,8 @@ public class Init {
 						}
 
 						if ((id.equals(palavra) || (chave == true)) && !(proxLetra.equals(proxLetraLida))) {
+							
+							key++;
 
 							NodeList listaDeFilhosDaPalavra = elementoPalavra.getChildNodes();
 
@@ -244,10 +247,11 @@ public class Init {
 						chave = false;
 
 					}
-					if (proxLetra.equals(proxLetraLida)) {
+					if (proxLetra.equals(proxLetraLida) && key>0) {
+						break;
+					}else{
 						System.out.println("\r\n" + palavra + " não está contida no dicionário\r\n");
 						break;
-
 					}
 				}
 
