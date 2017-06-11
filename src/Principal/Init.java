@@ -244,10 +244,15 @@ public class Init {
 						chave = false;
 
 					}
+					if (proxLetra.equals(proxLetraLida)) {
+						System.out.println("\r\n" + palavra + " não está contida no dicionário\r\n");
+						break;
+
+					}
 				}
 
 				if (control == false) {
-					System.out.println("\r\n"+palavra + " não está contida no dicionário\r\n");
+					System.out.println("\r\n" + palavra + " não está contida no dicionário\r\n");
 
 				}
 
