@@ -249,7 +249,7 @@ public class Init {
 					}
 					if (proxLetra.equals(proxLetraLida) && key>0) {
 						break;
-					}else{
+					}else if (proxLetra.equals(proxLetraLida) && key==0){
 						System.out.println("\r\n" + palavra + " não está contida no dicionário\r\n");
 						break;
 					}
