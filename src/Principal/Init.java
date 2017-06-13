@@ -29,6 +29,9 @@ public class Init {
 	private static String[] Alfabeto = { "a", "b", "c", "ç", "d", "e", "f", "g", "h", "i", "j", "l", "m", "n", "o", "p",
 			"q", "r", "s", "t", "u", "v", "x", "z", "k", "w", "y", "*" };
 	private List<String> palavras = new ArrayList<String>();
+	private List<String> palavrasDic = new ArrayList<String>();
+	private List<String> NERlist = new ArrayList<String>();
+	private List<String> palavrasForaDic = new ArrayList<String>();
 
 	private Init() {
 	}
@@ -40,8 +43,36 @@ public class Init {
 		return instance;
 	}
 
+	public String toStringNERList() {
+		return this.NERlist.toString();
+	}
+
+	public List<String> getNERList() {
+		return this.NERlist;
+	}
+
 	public String toStringPOS() {
 		return this.palavras.toString();
+	}
+
+	public List<String> getPalavrasPOS() {
+		return this.palavras;
+	}
+
+	public String toStringPalavrasDIC() {
+		return this.palavrasDic.toString();
+	}
+
+	public List<String> getPalavrasDIC() {
+		return this.palavrasDic;
+	}
+
+	public String toStringPalavrasForaDIC() {
+		return this.palavrasForaDic.toString();
+	}
+
+	public List<String> getPalavrasForaDIC() {
+		return this.palavrasForaDic;
 	}
 
 	private static void replaceAll(StringBuffer builder, String from, String to) {
@@ -137,12 +168,13 @@ public class Init {
 
 	}
 
-	public static void BuscaDicionarioXML(String palavra) {
+	public void BuscaDicionarioXML(String palavra) {
 		String proxLetra = null;
 		String proxLetraLida = null;
 		boolean chave = false;
 		boolean control = false;
-		byte key=0;
+		boolean control2 = false;
+		byte key = 0;
 
 		palavra = palavra.substring(0, 1).toUpperCase() + palavra.substring(1).toLowerCase();
 
@@ -212,8 +244,10 @@ public class Init {
 						}
 
 						if ((id.equals(palavra) || (chave == true)) && !(proxLetra.equals(proxLetraLida))) {
-							
+
 							key++;
+
+							this.palavrasDic.add(palavra);
 
 							NodeList listaDeFilhosDaPalavra = elementoPalavra.getChildNodes();
 
@@ -240,6 +274,8 @@ public class Init {
 
 									case "def":
 										System.out.println("Definição: \r\n" + elementoFilho.getTextContent() + "\r\n");
+										System.out.println(
+												"--------------------------------------------------------------------------");
 										break;
 
 									}
@@ -251,18 +287,21 @@ public class Init {
 						chave = false;
 
 					}
-					if (proxLetra.equals(proxLetraLida) && key>0) {
+					if (proxLetra.equals(proxLetraLida) && key > 0) {
 						break;
-					}else if (proxLetra.equals(proxLetraLida) && key==0){
-						System.out.println("\r\n" + palavra + " não está contida no dicionário\r\n");
+					} else if (proxLetra.equals(proxLetraLida) && key == 0) {
+						// System.out.println("\r" + palavra + " não está
+						// contida no dicionário\r\n");
+						control2 = true;
 						break;
 					}
 				}
 
-				if (control == false) {
-					System.out.println("\r\n" + palavra + " não está contida no dicionário\r\n");
-
-				}
+				/*
+				 * if (control == false && control2 == false) {
+				 * System.out.println("\r" + palavra +
+				 * " não está contida no dicionário\r\n"); }
+				 */
 
 			} catch (ParserConfigurationException ex) {
 				Logger.getLogger(Init.class.getName()).log(Level.SEVERE, null, ex);
@@ -275,7 +314,7 @@ public class Init {
 
 	}
 
-	public static void BuscaDicionario(String palavra) {
+	public void BuscaDicionario(String palavra) {
 		String proxLetra = null;
 		String proxLetraLida = null;
 
@@ -320,6 +359,7 @@ public class Init {
 								proxLetraLida = linha.substring(1, 2);
 						// System.out.println(linha);
 						if (linha.contains(aux)) {
+							this.palavrasDic.add(palavra);
 							System.out.println("(" + palavra + ") está contida no dicionário");
 							key = 1;
 						}
@@ -378,64 +418,129 @@ public class Init {
 				count = Alt1.length();
 				Alt1.delete(0, count);
 				// System.out.println(palavraC);
-				this.palavras.add(palavraC);
+				this.palavras.add(palavraC.toLowerCase());
 
 			}
 		}
 
+		palavrasForaDic = palavras;
+
 	}
 
-	public void Execucao(String frase) {
+	public void ExecucaoTXT(String frase) {
+
+		System.out.println("================================================================================");
+		System.out.println("Frase:");
+		System.out.println(frase);
+		System.out.println("================================================================================");
 
 		this.pos(frase);
 
-		System.out.println("\nBusca no dicionário de palavras:\n");
+		System.out.println("\nBusca no dicionário de palavras TXT:\n");
 
 		for (int i = 0; i < this.palavras.size(); i++) {
-			Init.BuscaDicionario(palavras.get(i));
+			BuscaDicionario(palavras.get(i));
 		}
 
 	}
 
 	public void ExecucaoXML(String frase) {
 
+		System.out.println("================================================================================");
 		System.out.println("Frase:");
 		System.out.println(frase);
+		System.out.println("================================================================================");
 
 		this.pos(frase);
 
-		System.out.println("\nBusca no dicionário de palavras:\n");
+		System.out.println("\nBusca no dicionário de palavras XML:\n");
 
 		for (int i = 0; i < this.palavras.size(); i++) {
-			Init.BuscaDicionarioXML(palavras.get(i));
+			BuscaDicionarioXML(palavras.get(i));
 		}
 
 	}
-	
-	public void NERwiki(){
-		
-		String stringURL = "https://pt.wikipedia.org/w/index.php?search=matrata";
-        String resposta = "";
-        try {
-            URL url = new URL(stringURL);
-            URLConnection connection = url.openConnection();
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(
-                    connection.getInputStream()));
-            String inputLine;
-            StringBuffer sb = new StringBuffer();
-            while ((inputLine = in.readLine()) != null) sb.append(inputLine);
-            resposta = sb.toString();
-            in.close();
-        } catch (MalformedURLException ex) {
-            ex.printStackTrace();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        
-        System.out.println(resposta);
-        
-        //diferença na inspeção do elemento <link rel="canonical" href="https://pt.wikipedia.org/wiki/Mateus">
+
+	public void ExecucaoNER() {
+
+		for (int i = 0; i < this.palavrasForaDic.size(); i++) {
+			for (int j = 0; j < this.palavrasDic.size(); j++) {
+				if (palavrasForaDic.get(i).equals(palavrasDic.get(j).toLowerCase())) {
+					this.palavrasForaDic.remove(i);
+				}
+			}
+		}
+
+		System.out.println("================================================================================");
+
+		System.out.println("\nBuscando palavras na base de dados Wikipédia:\n");
+
+		for (int i = 0; i < this.palavrasForaDic.size(); i++) {
+			NERwiki(palavrasForaDic.get(i));
+		}
+
+		System.out.println("\nBusca Concluída!\n");
+
+		System.out.println("================================================================================");
+
+	}
+
+	public void MAINxml(String frase) {
+		ExecucaoXML(frase);
+		ExecucaoNER();
+	}
+
+	public void MAINtxt(String frase) {
+		ExecucaoTXT(frase);
+		ExecucaoNER();
+	}
+
+	public void NERwiki(String palavraNER) {
+
+		String stringURL = "https://pt.wikipedia.org/w/index.php?search=";
+		stringURL = stringURL.concat(palavraNER);
+		String resposta = "";
+
+		try {
+			URL url = new URL(stringURL);
+			URLConnection connection = url.openConnection();
+			BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+			String inputLine;
+			StringBuffer sb = new StringBuffer();
+			while ((inputLine = in.readLine()) != null)
+				sb.append(inputLine);
+			resposta = sb.toString();
+			in.close();
+		} catch (MalformedURLException ex) {
+			ex.printStackTrace();
+		} catch (IOException ex) {
+			System.out.println("sem conexão com a internet");
+			// ex.printStackTrace();
+		}
+
+		String Alt[] = resposta.split(Pattern.quote(">"));
+		StringBuffer aux = new StringBuffer();
+		aux.append("<link rel=\"canonical\"");
+		String tag = "";
+		for (int i = 0; i < Alt.length; i++) {
+			if (Alt[i].contains(aux)) {
+				tag = Alt[i];
+			}
+		}
+
+		StringBuffer aux2 = new StringBuffer();
+		aux2.append("/index.php?");
+
+		if (tag.contains(aux2)) {
+			// System.out.println(palavraNER + " Não é NER");
+		} else {
+			this.NERlist.add(palavraNER);
+			this.palavrasForaDic.remove(palavraNER);
+			// System.out.println("É NER");
+		}
+
+		// diferença na inspeção do elemento <link rel="canonical"
+		// href="https://pt.wikipedia.org/wiki/Mateus">
 	}
 
 }
