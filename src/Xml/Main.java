@@ -8,7 +8,7 @@ public class Main {
 	
 	public static void main(String[]args){
 	
-	
+	/*
 		ArrayList<String> frase = FileOpen.getInstance().lerArquivo();
 		
 		String textoConcatenado = "";
@@ -22,7 +22,9 @@ public class Main {
 		
 		// teste de busca no xml
 		Init.getInstance().ExecucaoXML("abacaxi bloco");
-	
+	*/
+		
+		Init.getInstance().NERwiki();
 	}
 
 }
