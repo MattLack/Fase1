@@ -247,7 +247,9 @@ public class Init {
 
 							key++;
 
-							this.palavrasDic.add(palavra);
+							if (key <= 1) {
+								this.palavrasDic.add(palavra);
+							}
 
 							NodeList listaDeFilhosDaPalavra = elementoPalavra.getChildNodes();
 
@@ -465,7 +467,7 @@ public class Init {
 
 		for (int i = 0; i < this.palavrasForaDic.size(); i++) {
 			for (int j = 0; j < this.palavrasDic.size(); j++) {
-				if (palavrasForaDic.get(i).equals(palavrasDic.get(j).toLowerCase())) {
+				if (this.palavrasForaDic.get(i).equals(this.palavrasDic.get(j).toLowerCase())) {
 					this.palavrasForaDic.remove(i);
 				}
 			}
@@ -475,11 +477,21 @@ public class Init {
 
 		System.out.println("\nBuscando palavras na base de dados Wikipédia:\n");
 
-		for (int i = 0; i < this.palavrasForaDic.size(); i++) {
-			NERwiki(palavrasForaDic.get(i));
+		for (int p = 0; p < this.palavrasForaDic.size(); p++) {
+
+			NERwiki(this.palavrasForaDic.get(p));
+
 		}
 
 		System.out.println("\nBusca Concluída!\n");
+
+		for (int i = 0; i < this.palavrasForaDic.size(); i++) {
+			for (int j = 0; j < this.NERlist.size(); j++) {
+				if (this.palavrasForaDic.get(i).equals(this.NERlist.get(j).toLowerCase())) {
+					this.palavrasForaDic.remove(i);
+				}
+			}
+		}
 
 		System.out.println("================================================================================");
 
@@ -531,12 +543,8 @@ public class Init {
 		StringBuffer aux2 = new StringBuffer();
 		aux2.append("/index.php?");
 
-		if (tag.contains(aux2)) {
-			// System.out.println(palavraNER + " Não é NER");
-		} else {
+		if (!tag.contains(aux2)) {
 			this.NERlist.add(palavraNER);
-			this.palavrasForaDic.remove(palavraNER);
-			// System.out.println("É NER");
 		}
 
 		// diferença na inspeção do elemento <link rel="canonical"

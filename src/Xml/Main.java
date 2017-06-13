@@ -49,7 +49,7 @@ public class Main {
 		
 		//System.out.println(result);
 		
-		Init.getInstance().MAINxml("Olá Mateus matrata está aqui fazendo algo.");
+		Init.getInstance().MAINxml("Olá Mateus matrata está erro fazendo algo.");
 		System.out.println("Palavras no DIc: "+ Init.getInstance().toStringPalavrasDIC());
 		System.out.println("Palavras ner: "+ Init.getInstance().toStringNERList());
 		System.out.println("Palavras fora do dic: "+Init.getInstance().toStringPalavrasForaDIC());
